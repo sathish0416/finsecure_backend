@@ -289,106 +289,6 @@ psql -h localhost -U postgres -d finance_db \
   -f src/main/resources/db/migration/V1__backend_improvements.sql
 ```
 
-## 📊 Performance & Monitoring
-
-### **Database Optimizations**
-- **Indexes** on frequently queried columns
-- **Composite indexes** for complex queries
-- **Connection pooling** for optimal performance
-- **Query optimization** with proper JPA queries
-
-### **Logging & Monitoring**
-- **Structured logging** with correlation IDs
-- **Request/response logging** for debugging
-- **Performance metrics** tracking
-- **Error tracking** with detailed context
-
-## 🔄 Business Logic
-
-### **Transaction Validation**
-- **Amount must be positive** (> 0)
-- **Date cannot be in future**
-- **Category must exist**
-- **User must be active**
-
-### **Role-Based Restrictions**
-- **VIEWER**: Read-only access to dashboard data
-- **ANALYST**: Can view/filter data, max transaction $10,000
-- **ADMIN**: Full system access, no transaction limits
-
-### **Data Integrity**
-- **Audit trails** with created/updated timestamps
-- **Soft validation** with user-friendly error messages
-- **Database constraints** for data consistency
-
-## 🚀 Deployment
-
-### **Production Build**
-```bash
-mvn clean package
-java -jar target/finance-dashboard-0.0.1-SNAPSHOT.jar
-```
-
-### **Docker Deployment**
-```dockerfile
-FROM openjdk:17-jre-slim
-COPY target/finance-dashboard-0.0.1-SNAPSHOT.jar app.jar
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/app.jar"]
-```
-
-### **Environment Variables**
-```bash
-export DATABASE_URL=jdbc:postgresql://localhost:5432/finance_db
-export DATABASE_USERNAME=postgres
-export DATABASE_PASSWORD=your_password
-export JWT_SECRET=your_production_secret
-```
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🆘 Support
-
-For support and questions:
-- Create an issue in the GitHub repository
-- Check the API documentation at `http://localhost:8080/swagger-ui.html`
-- Review the logs for detailed error information
-
-## 🔄 Version History
-
-### **v2.0.0** - Enterprise Backend Implementation
-- ✅ Complete pagination system with PageResponse wrapper
-- ✅ Standardized API responses with ApiResponse wrapper
-- ✅ Enhanced validation with comprehensive business rules
-- ✅ Enterprise-grade error handling with correlation IDs
-- ✅ BigDecimal for all financial calculations
-- ✅ Performance optimizations with database indexes
-- ✅ Production-ready configuration and monitoring
-- ✅ Comprehensive API documentation with Swagger
-- ✅ Role-based business logic and security
-- ✅ Audit trails and data integrity features
-
-### **v1.0.0** - Initial Implementation
-- ✅ Basic Spring Boot setup with JWT authentication
-- ✅ Role-based access control (ADMIN, ANALYST, VIEWER)
-- ✅ Transaction CRUD operations
-- ✅ Basic dashboard endpoints
-- ✅ PostgreSQL integration
-- **Role-based access control** with three distinct roles:
-  - **VIEWER**: Read-only access to financial data
-  - **ANALYST**: Advanced analytics and filtering capabilities
-  - **ADMIN**: Full system control including user and transaction management
-
 ### 📊 Role-Based Dashboards
 
 #### 📖 Viewer Dashboard
@@ -425,201 +325,30 @@ For support and questions:
 - **Loading States**: Professional loading indicators
 - **Accessibility**: Semantic HTML and ARIA labels
 
-## 🚀 Getting Started
-
-### Prerequisites
-- **Node.js** 18+ and npm
-- **Java 17** and Maven 3.8+
-- **PostgreSQL** 16+
-
-### Backend Setup
-
-1. **Clone the repository**
-```bash
-git clone https://github.com/sathish0416/FinSecure.git
-cd FinSecure/finance-dashboard
-```
-
-2. **Database Configuration**
-```bash
-# Create PostgreSQL database
-createdb finance_db
-
-# Update database credentials in src/main/resources/application.properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/finance_db
-spring.datasource.username=postgres
-spring.datasource.password=your_password
-```
-
-3. **Run the Backend**
-```bash
-# Using Maven
-mvn spring-boot:run
-
-# Or using Maven Wrapper
-./mvnw spring-boot:run
-```
-
-The backend will start on `http://localhost:8080`
-
-### Frontend Setup
-
-1. **Navigate to Frontend Directory**
-```bash
-cd ../finance-frontend
-```
-
-2. **Install Dependencies**
-```bash
-npm install
-```
-
-3. **Start Development Server**
-```bash
-npm run dev
-```
-
-The frontend will start on `http://localhost:5173`
-
-## 📚 API Documentation
-
-### Authentication Endpoints
-- `POST /api/users/register` - User registration
-- `POST /api/users/login` - User authentication
-
-### Dashboard Endpoints (All Roles)
-- `GET /api/dashboard/summary` - Financial metrics
-- `GET /api/dashboard/category-summary` - Category-wise data
-- `GET /api/dashboard/monthly-trends` - Monthly analytics
-
-### Transaction Endpoints (Role-Restricted)
-- `GET /api/transactions` - View transactions (Admin/Analyst)
-- `POST /api/transactions` - Create transaction (Admin)
-- `PUT /api/transactions/{id}` - Update transaction (Admin)
-- `DELETE /api/transactions/{id}` - Delete transaction (Admin)
-- `GET /api/transactions/filter` - Filter transactions (Admin/Analyst)
-
-### User Management Endpoints (Admin Only)
-- `GET /api/admin/users` - List all users
-- `POST /api/users/register` - Create user (with role assignment)
-
-## 🔐 Security Features
-
-- **JWT Authentication**: Stateless token-based authentication
-- **Role-Based Access Control**: Granular permissions by user role
-- **Password Security**: BCrypt encryption for password storage
-- **API Protection**: All sensitive endpoints protected with `@PreAuthorize`
-- **Token Management**: Automatic token injection and refresh
-
-## 🎯 Role Permissions
-
-| Feature | VIEWER | ANALYST | ADMIN |
-|---------|--------|---------|-------|
-| View Dashboard | ✅ | ✅ | ✅ |
-| View Analytics | ✅ | ✅ | ✅ |
-| Filter Data | ❌ | ✅ | ✅ |
-| Export Data | ❌ | ✅ | ✅ |
-| Create Transactions | ❌ | ❌ | ✅ |
-| Edit Transactions | ❌ | ❌ | ✅ |
-| Delete Transactions | ❌ | ❌ | ✅ |
-| Manage Users | ❌ | ❌ | ✅ |
-
-## 🛠️ Technology Stack
-
-### Backend
-- **Spring Boot 4.0.5** - Main framework
-- **Spring Security** - Authentication and authorization
-- **Spring Data JPA** - Database operations
-- **PostgreSQL** - Primary database
-- **JWT (io.jsonwebtoken)** - Token-based authentication
-- **SpringDoc OpenAPI** - API documentation
-- **Maven** - Build tool
-
-### Frontend
-- **React 19.2.4** - UI framework
-- **Vite 8.0.4** - Build tool and dev server
-- **React Router DOM** - Client-side routing
-- **Axios** - HTTP client
-- **Lucide React** - Icon library
-- **jwt-decode** - JWT token parsing
-
-## 📱 Responsive Design
-
-The application is fully responsive and works seamlessly across:
-- **Desktop** (1200px+): Full dashboard experience
-- **Tablet** (768px-1199px): Optimized layout with collapsible sections
-- **Mobile** (320px-767px): Stacked layout with touch-friendly controls
-
-## 🧪 Testing
-
-### Backend Testing
-```bash
-# Run all tests
-mvn test
-
-# Run specific test class
-mvn test -Dtest=UserServiceTest
-
-# Run with coverage
-mvn test jacoco:report
-```
-
-### Frontend Testing
-```bash
-# Run ESLint
-npm run lint
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-```
-
-## 📦 Deployment
-
-### Backend Deployment
-```bash
-# Build JAR file
-mvn clean package
-
-# Run JAR file
-java -jar target/finance-dashboard-0.0.1-SNAPSHOT.jar
-```
-
-### Frontend Deployment
-```bash
-# Build for production
-npm run build
-
-# Deploy dist/ folder to your web server
-```
+---
 
 ## 🤝 Contributing
 
+Contributions are welcome! If you'd like to improve this project:
+
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
+2. Create a new branch 
+3. Commit your changes
+4. Push to your branch
 5. Open a Pull Request
 
-## 📄 License
+---
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## 📜 License
 
-## 🆘 Support
+This project is licensed under the **MIT License**.
 
-For support and questions:
-- Create an issue in the GitHub repository
-- Check the API documentation at `http://localhost:8080/swagger-ui.html`
-- Review the role permissions table above
+---
 
-## 🔄 Version History
+## 👨‍💻 Author
 
-- **v1.0.0** - Complete financial management system with role-based access control
-  - Full authentication and authorization
-  - Three role-based dashboards
-  - Transaction management
-  - User administration
-  - Responsive design
-  - Comprehensive error handling
+**Sathish Madanu**
+
+- GitHub: https://github.com/sathish0416
+---
+
